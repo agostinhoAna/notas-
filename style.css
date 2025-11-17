@@ -1,59 +1,91 @@
-// Selecionando elementos
-const formulario = document.getElementById("formulario");
-const tabela = document.querySelector("#tabelaAlunos tbody");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-// Carregar dados do localStorage ao iniciar a página
-let listaAlunos = JSON.parse(localStorage.getItem("alunos")) || [];
-renderizarTabela();
+body {
+    background: #f0f4f7;
+    padding: 20px;
+}
 
-// Evento de adicionar aluno
-formulario.addEventListener("submit", function (e) {
-    e.preventDefault();
+header h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
 
-    let nome = document.getElementById("nome").value.trim();
-    let nota1 = parseFloat(document.getElementById("nota1").value);
-    let nota2 = parseFloat(document.getElementById("nota2").value);
+.form-section, .tabela-section {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-    // Validação
-    if (!nome || isNaN(nota1) || isNaN(nota2)) {
-        alert("Preencha todos os campos corretamente!");
-        return;
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    background: #007bff;
+    color: white;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #007bff;
+    color: white;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Situações */
+.aprovado {
+    background: #b2f5b2;
+}
+
+.reprovado {
+    background: #f5b2b2;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
     }
 
-    let media = ((nota1 + nota2) / 2).toFixed(2);
-    let status = media >= 6 ? "Aprovado" : "Reprovado";
+    tr {
+        margin-bottom: 15px;
+    }
 
-    // Criar o objeto aluno
-    let aluno = { nome, nota1, nota2, media, status };
-    listaAlunos.push(aluno);
-
-    // Salvar no localStorage
-    localStorage.setItem("alunos", JSON.stringify(listaAlunos));
-
-    // Atualizar a tabela
-    renderizarTabela();
-
-    // Limpar campos
-    formulario.reset();
-});
-
-// Função para inserir os dados na tabela
-function renderizarTabela() {
-    tabela.innerHTML = "";
-
-    listaAlunos.forEach(aluno => {
-        let linha = document.createElement("tr");
-
-        linha.classList.add(aluno.status === "Aprovado" ? "aprovado" : "reprovado");
-
-        linha.innerHTML = `
-            <td>${aluno.nome}</td>
-            <td>${aluno.nota1}</td>
-            <td>${aluno.nota2}</td>
-            <td>${aluno.media}</td>
-            <td>${aluno.status}</td>
-        `;
-
-        tabela.appendChild(linha);
-    });
+    th {
+        background: #0056b3;
+    }
 }
